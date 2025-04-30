@@ -1,6 +1,4 @@
 import math
-
-
 import wpilib
 import wpilib.drive
 import romi
