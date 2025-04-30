@@ -29,7 +29,7 @@ class MyRobot(TimedRobot):
 
     def autonomousPeriodic(self):
         '''This is called every cycle while the robot is in autonomous.'''
-        if self.drivetrain.getAverageDistanceInch() < 12:
+        if self.drivetrain.getAverageDistanceInch() < 72:
             # find the difference between the encoders
             left=self.drivetrain.getLeftDistanceInch()
             right=self.drivetrain.getRightDistanceInch()
