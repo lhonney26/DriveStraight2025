@@ -25,16 +25,16 @@ class MyRobot(TimedRobot):
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
         self.drivetrain.resetEncoders()
-        self.starting_length=self.drivetrain.getAverageDistanceInch()
+
 
     def autonomousPeriodic(self):
         '''This is called every cycle while the robot is in autonomous.'''
-        if self.drivetrain.getAverageDistanceInch() < self.starting_length+72:
+        if self.drivetrain.getAverageDistanceInch() < 12:
             # find the difference between the encoders
             left=self.drivetrain.getLeftDistanceInch()
             right=self.drivetrain.getRightDistanceInch()
             error=right-left
-            self.drivetrain.arcadeDrive(-0.7,0.8*error)
+            self.drivetrain.arcadeDrive(-0.7,0.6*error)
         else:
             self.drivetrain.arcadeDrive(0,0)
 
