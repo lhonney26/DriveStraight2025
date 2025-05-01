@@ -1,6 +1,6 @@
-
-
-from wpilib import TimedRobot, Joystick
+from wpilib import Joystick
+from commands2 import TimedCommandRobot, CommandScheduler, RunCommand
+from autonomous.drivestraight import DriveStraight
 import os
 from subsystems.drivetrain import Drivetrain
 import ntcore
@@ -8,7 +8,7 @@ import ntcore
 os.environ["HALSIMWS_HOST"] = "10.0.0.2"
 os.environ["HALSIMWS_PORT"] = "3300"
 
-class MyRobot(TimedRobot):
+class MyRobot(TimedCommandRobot):
 
     def robotInit(self):
         '''This method is called as the robot turns on and is often used to setup the
@@ -16,15 +16,26 @@ class MyRobot(TimedRobot):
         self.controller=Joystick(0)
         self.drivetrain=Drivetrain()
         self.nt_drivetrain = ntcore.NetworkTableInstance.getDefault().getTable("Drivetrain")
+        
+        self.drivetrain.setDefaultCommand(
+            RunCommand(
+                lambda: self.drivetrain.aracadeDrive(
+                    -self.controller.getRawAxis(1)
+                    self.controller.getRawAxis(0),
+                ),
+                self.drivetrain
+            )
+        )
 
     def robotPeriodic(self):
         '''This is called every cycle of the code. In general the code is loop
         through every .02 seconds.'''
-        self.drivetrain.periodic()
+        CommandScheduler.getInstance().run()
 
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
-        self.drivetrain.resetEncoders()
+        self.autoCommand = DriveStraight(self.drivetrain)
+        self.autoCommand.schedule()
 
 
     def autonomousPeriodic(self):
