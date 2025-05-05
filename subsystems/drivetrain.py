@@ -124,4 +124,6 @@ class Drivetrain(Subsystem):
         self.nt_drivetrain.putNumber("Left Distance", self.getLeftDistanceInch())
         self.nt_drivetrain.putNumber("Right Distance", self.getRightDistanceInch())
         self.nt_drivetrain.putNumber("Average Distance", self.getAverageDistanceInch())
+        self.nt_drivetrain.putNumber("Z Angle", self.getGyroAngleZ()*180/math.pi)
+        self.nt_drivetrain.putNumber("z Angle Goal", 90)
 

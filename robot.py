@@ -1,6 +1,7 @@
 from wpilib import Joystick
 from commands2 import TimedCommandRobot, CommandScheduler, RunCommand
-from autonomous.drivestraight import DriveStraight
+from autonomous.drivestraight import DriveStraight 
+from autonomous.turnninety import TurnNinety
 import os
 from subsystems.drivetrain import Drivetrain
 import ntcore
@@ -19,9 +20,9 @@ class MyRobot(TimedCommandRobot):
         
         self.drivetrain.setDefaultCommand(
             RunCommand(
-                lambda: self.drivetrain.aracadeDrive(
-                    -self.controller.getRawAxis(1)
-                    self.controller.getRawAxis(0),
+                lambda: self.drivetrain.arcadeDrive(
+                    -self.controller.getRawAxis(1),
+                    self.controller.getRawAxis(0)
                 ),
                 self.drivetrain
             )
@@ -34,20 +35,22 @@ class MyRobot(TimedCommandRobot):
 
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
-        self.autoCommand = DriveStraight(self.drivetrain)
+        self.autoCommand = TurnNinety(self.drivetrain)
         self.autoCommand.schedule()
 
 
     def autonomousPeriodic(self):
+        pass
         '''This is called every cycle while the robot is in autonomous.'''
-        if self.drivetrain.getAverageDistanceInch() < 72:
+    ''' if self.drivetrain.getAverageDistanceInch() < 72:
             # find the difference between the encoders
             left=self.drivetrain.getLeftDistanceInch()
             right=self.drivetrain.getRightDistanceInch()
             error=right-left
             self.drivetrain.arcadeDrive(-0.7,0.6*error)
         else:
-            self.drivetrain.arcadeDrive(0,0)
+            self.drivetrain.arcadeDrive(0,0)'''
+        
 
     def teleopInit(self):
         '''This is called once at the start of Teleop.'''
@@ -55,9 +58,10 @@ class MyRobot(TimedCommandRobot):
 
     def teleopPeriodic(self):
         '''This is called once every cycle during Teleop'''
-        forward = self.controller.getRawAxis(1)
-        rotate = self.controller.getRawAxis(0)
-        self.drivetrain.arcadeDrive(forward, rotate)
+        # forward = self.controller.getRawAxis(1)
+        # rotate = self.controller.getRawAxis(0)
+        # self.drivetrain.arcadeDrive(forward, rotate)
+        pass
 
 
 
