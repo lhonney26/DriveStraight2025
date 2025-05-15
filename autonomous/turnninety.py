@@ -8,7 +8,7 @@ class TurnNinety(Command):
     def __init__(self, drivetrain):
         super().__init__()
         self.drivetrain = drivetrain
-        self.Kp = 0.4
+        self.Kp = 1
         self.Ki = 0
         self.Kd = 0
         self.pid_controller = PIDController(self.Kp, self.Ki, self.Kd)
@@ -16,9 +16,10 @@ class TurnNinety(Command):
     def initialize(self):
         self.drivetrain.resetGyro()
         self.pid_controller.setSetpoint(math.pi/2)
-        self.pid_controller.setTolerance(math.pi/180)
+        self.pid_controller.setTolerance(5*math.pi/180)
 
     def execute(self):
+        print(self.drivetrain.getGyroAngleZ())
         self.drivetrain.arcadeDrive(
             0, 
             self.pid_controller.calculate(
@@ -27,8 +28,10 @@ class TurnNinety(Command):
         )
 
     def isFinished(self):
+
         return self.pid_controller.atSetpoint()
 
    
     def end(self, interrupted):
+        print("DONE")
         self.drivetrain.arcadeDrive(0, 0)
